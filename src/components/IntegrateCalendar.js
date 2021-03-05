@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react'
 // TODO: Convert to environment variables
 
 // Client ID and API key from the Developer Console
-const CLIENT_ID = '12158249262-rj28t5dr2oti2dem0gaefg30un5mtnnf.apps.googleusercontent.com';
-const API_KEY = 'AIzaSyAIStaSs6RUsd3GI9kxP1IPrwJ7hyziFms';
+const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
 // Array of API discovery doc URLs for APIs used by the quickstart
 const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
