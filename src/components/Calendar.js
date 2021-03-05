@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Firebase from './Firebase'
 import moment from 'moment'
 // https://github.com/wojtekmaj/react-calendar
@@ -9,8 +9,11 @@ function Calendar({ uid }) {
 
     const [gapi, setGapi] = useState(false)
     const [availability, setAvailability] = useState()
+    const [unavailability, setUnavailability] = useState()
     const [value, setDate] = useState(new Date())
+    const [activeDate, setActiveDate] = useState(new Date().toISOString())
     const [busy, setBusy] = useState([])
+    const [inactiveDate, setInactiveDate] = useState([])
 
     // const [activeStartDate, setActiveStartDate] = useState()
 
@@ -20,7 +23,9 @@ function Calendar({ uid }) {
         db.collection("experts").where("uid", "==", uid).onSnapshot((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 setAvailability(doc.data().availability)
+                setUnavailability(doc.data().unavailability)
             })
+            // filterUnavailabilityByMonth(value)
         })
 
         window.gapi.load("client:auth2", () => {
@@ -36,6 +41,17 @@ function Calendar({ uid }) {
         })
 
     }, [])
+
+    /**
+     * Filter unavailability date(s) to determine if any belong to the current
+     * month view in the calendar.
+     */
+    useEffect(() => {
+        let res = unavailability && unavailability.filter((date) => {
+            return moment(activeDate, 'YYYY-MM').isSame(moment(date.from, 'YYYY-MM'))
+        })
+        setInactiveDate(res)
+    }, [activeDate, unavailability])
 
     const weekdays = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
@@ -54,13 +70,27 @@ function Calendar({ uid }) {
     }
 
     /**
-     * Disable date that fall outside the availability window
+     * Disable day that falls outside the availability window or within the 
+     * list of unavailable date(s) as defined by the expert.
      * @param {object} data 
      */
-    const handleTileDisabled = (data) => {
+    const handleTileDisabled = useCallback((data) => {
+        const currDay = moment(data.date)
         const dayAbbr = weekdays[data.date.getDay()]
-        return availability && availability[dayAbbr] && !availability[dayAbbr].enabled
-    }
+        let dayStatus = false
+
+        if (availability && availability[dayAbbr] && !availability[dayAbbr].enabled) {
+            dayStatus = true
+        } else {
+            inactiveDate && inactiveDate.forEach(inactiveRange => {
+                if (currDay.isBetween(moment(inactiveRange.from), moment(inactiveRange.to))) {
+                    dayStatus = true
+                }
+            });
+        }
+
+        return dayStatus
+    }, [inactiveDate, availability, weekdays])
 
     /**
      * Google Calendar (gapi) pull for free/busy events listing
@@ -68,6 +98,7 @@ function Calendar({ uid }) {
      */
     const handleOnActiveStartDateChange = (date) => {
         if (date.view === "month" && gapi) {
+            setActiveDate(date.activeStartDate)
             loadGCalEvents(date.activeStartDate)
         }
     }
@@ -122,7 +153,7 @@ function Calendar({ uid }) {
 
             timeSlots.forEach(slot => {
                 const slotHour = moment(slot, TIME_FORMAT).hours()
-                console.log(start.hours(), end.hours(), slotHour)
+
                 if (start.hours() === slotHour || end.hours() === slotHour || start.hours() + length >= slotHour) {
                     timeSlots.delete(slot)
                 }
