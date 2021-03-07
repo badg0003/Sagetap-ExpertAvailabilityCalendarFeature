@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Firebase from './Firebase'
 import moment from 'moment'
-// https://github.com/wojtekmaj/react-calendar
 import ReactCalendar from 'react-calendar'
 import CalendarTimeList from "./CalendarTimeList";
 

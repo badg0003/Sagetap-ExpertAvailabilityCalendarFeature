@@ -1,6 +1,7 @@
 import IntegrateCalendar from './components/IntegrateCalendar'
 import Calendar from './components/Calendar'
 import Availability from './components/Availability'
+import Unavailability from './components/Unavailability'
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <IntegrateCalendar />
       <Calendar uid="8d2e8185-9ebf-4a6c-a7d1-020c5fe343ce" />
       <Availability uid="8d2e8185-9ebf-4a6c-a7d1-020c5fe343ce" />
+      <Unavailability uid="8d2e8185-9ebf-4a6c-a7d1-020c5fe343ce" />
     </div>
   );
 }

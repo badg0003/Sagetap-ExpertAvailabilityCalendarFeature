@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import moment from 'moment'
 
 const CalendarTimeList = ({ date, busy, availability }) => {
+    const [timeslot, setTimeslot] = useState()
+
     const TIME_FORMAT = 'hh:mm A'
     const weekdays = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
@@ -61,12 +64,26 @@ const CalendarTimeList = ({ date, busy, availability }) => {
     let timeSlotsList = []
 
     timeSlots.forEach((item, index) => {
-        timeSlotsList.push(<li key={index}>{item}</li>)
+        timeSlotsList.push(
+            <li key={index}>
+                <input
+                    type="radio"
+                    value={item}
+                    id={`timeslot-${index}`}
+                    name="timeslot"
+                    onChange={(e) => setTimeslot(e.target.value)} />
+                <label htmlFor={`timeslot-${index}`}>{item}</label>
+                {timeslot === item ?
+                    <button type="button">Confirm</button> : ''}
+            </li>
+        )
     })
 
     return (
         <ul>
-            {timeSlots}
+            {timeSlotsList.map(item => {
+                return item
+            })}
         </ul>
     )
 }
