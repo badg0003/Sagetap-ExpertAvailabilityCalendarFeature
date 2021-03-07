@@ -8,9 +8,6 @@ import AvailabilityDelete from './AvailabilityDelete'
 
 const Availability = ({ uid }) => {
     const [availability, setAvailability] = useState()
-    const [unavailability, setUnavailability] = useState()
-    const [startTime, setStartTime] = useState()
-    const [endTime, setEndTime] = useState()
 
     const renderWeekdays = useCallback(() => {
 
@@ -52,11 +49,6 @@ const Availability = ({ uid }) => {
             '10:00 PM', '10:30 PM',
             '11:00 PM', '11:30 PM'
         ]
-
-        const onHandleChange = (val) => {
-            console.log(val)
-
-        }
 
         /**
          * Add a new time component for the given day.
@@ -100,6 +92,13 @@ const Availability = ({ uid }) => {
             setAvailability(newData)
         }
 
+        const onChangeEvent = (val, day, dayIndex, type) => {
+            const newData = availability
+            newData[day].ranges[dayIndex][type] = val
+
+            setAvailability({...newData})
+        }
+
         const weekdayList = []
 
         weekdays.forEach((weekday, abbr) => {
@@ -113,9 +112,24 @@ const Availability = ({ uid }) => {
                             <ul>
                                 {availability[abbr].ranges.map((range, index) => {
                                     return <li key={index}>
-                                        <AvailabilitySelect value={range.from} data={hoursInDay} onHandleChange={onHandleChange} />
-                                        to
-                                        <AvailabilitySelect value={range.to} data={hoursInDay} onHandleChange={onHandleChange} />
+                                        <AvailabilitySelect
+                                            value={range.from}
+                                            data={hoursInDay}
+                                            onHandleChange={onChangeEvent}
+                                            day={abbr}
+                                            dayIndex={index}
+                                            type='from' />
+
+                                        <span>to</span>
+
+                                        <AvailabilitySelect
+                                            value={range.to}
+                                            data={hoursInDay}
+                                            onHandleChange={onChangeEvent}
+                                            day={abbr}
+                                            dayIndex={index}
+                                            type='to' />
+
                                         <AvailabilityDelete onHandleClick={onDeleteEvent} day={abbr} dayIndex={index} />
                                     </li>
                                 })}
@@ -144,7 +158,6 @@ const Availability = ({ uid }) => {
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     setAvailability(doc.data().availability)
-                    setUnavailability(doc.data().unavailability)
                 })
             })
             .catch((error) => {

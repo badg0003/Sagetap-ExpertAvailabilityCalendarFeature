@@ -25,7 +25,6 @@ function Calendar({ uid }) {
                 setAvailability(doc.data().availability)
                 setUnavailability(doc.data().unavailability)
             })
-            // filterUnavailabilityByMonth(value)
         })
 
         window.gapi.load("client:auth2", () => {

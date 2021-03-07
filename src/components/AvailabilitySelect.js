@@ -1,18 +1,13 @@
-import {useEffect, useState} from 'react'
-import Firebase from './Firebase'
-
-function AvailabilitySelect({ value, data, onHandleChange }) {
-    const [selValue, setSelValue] = useState(value)
-    
+function AvailabilitySelect({ value, data, onHandleChange, day, dayIndex, type }) {  
     return (
-        <div>
+        <>
             {console.log('render')}
-            <select value={selValue} onChange={(e) => onHandleChange(e.target.value)}>
+            <select value={value} onChange={(e) => onHandleChange(e.target.value, day, dayIndex, type)}>
                 {data.map((item, index) => {
                     return <option key={index} value={item}>{item}</option>
                 })}
             </select>
-        </div>
+        </>
     )
 }
 
