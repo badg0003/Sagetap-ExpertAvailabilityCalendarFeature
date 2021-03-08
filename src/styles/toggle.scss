@@ -1,0 +1,30 @@
+.o-toggle {
+    
+    > label {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        border-radius: 1em;
+        height: 1.0625rem;
+        width: 1.875rem;
+        padding: 0 0.1875rem;
+        background-color: #E2E3E4;
+
+        &::before {
+            content: "";
+            background-color: #fff;
+            box-shadow: -2px 2px 4px rgba(45, 50, 54, 0.397755);
+            border-radius: 50%;
+            height: 0.8125rem;
+            width: 0.8125rem;
+        }
+    }
+
+    > input:checked {
+
+        + label {
+            background-color: #008CF5;
+            justify-content: flex-end;
+        }
+    }
+}
