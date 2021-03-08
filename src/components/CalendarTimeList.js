@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import moment from 'moment'
+import CalendarBooking from './CalendarBooking'
 
 const CalendarTimeList = ({ date, busy, availability }) => {
     const [timeslot, setTimeslot] = useState()
@@ -80,11 +81,14 @@ const CalendarTimeList = ({ date, busy, availability }) => {
     })
 
     return (
-        <ul>
-            {timeSlotsList.map(item => {
-                return item
-            })}
-        </ul>
+        <>
+            <ul>
+                {timeSlotsList.map(item => {
+                    return item
+                })}
+            </ul>
+            <CalendarBooking />
+        </>
     )
 }
 
