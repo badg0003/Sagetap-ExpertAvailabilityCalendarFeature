@@ -172,12 +172,7 @@ const Availability = ({ uid }) => {
     return (
         <>
             {console.log('render')}
-            <h1>Availability</h1>
-            <p>We only allow bookings within your availability that you set below, and at least 16 hours away to give you time to accept new requests.</p>
-
-            <div>
-                {renderWeekdays()}
-            </div>
+            {renderWeekdays()}
         </>
     )
 }

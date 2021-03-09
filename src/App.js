@@ -11,8 +11,12 @@ import Availability from './components/Availability'
 import Unavailability from './components/Unavailability'
 
 import { ReactComponent as Logo } from './logo.svg';
+import { useState } from "react";
 
 function App() {
+
+  const [tab, setTab] = useState(0)
+
   return (
     <Router>
 
@@ -30,8 +34,21 @@ function App() {
               <Home />
             </Route>
             <Route path="/availability">
-              <Availability uid="8d2e8185-9ebf-4a6c-a7d1-020c5fe343ce" />
-              <Unavailability uid="8d2e8185-9ebf-4a6c-a7d1-020c5fe343ce" />
+              <h1>Availability</h1>
+              <p>We only allow bookings within your availability that you set below, and at least 16 hours away to give you time to accept new requests.</p>
+
+              <div className="c-tabs">
+                <nav className="c-tabs__nav">
+                  <button className={`c-tabs__nav__tab${tab === 0 ? " c-tabs__nav__tab--active" : ""}`} type="button" onClick={() => setTab(0)}>Availability</button>
+                  <button className={`c-tabs__nav__tab${tab === 1 ? " c-tabs__nav__tab--active" : ""}`} type="button" onClick={() => setTab(1)}>Unavailability</button>
+                </nav>
+                <div className={`c-tabs__panel${tab === 0 ? " c-tabs__panel--active" : ""}`}>
+                  <Availability uid="8d2e8185-9ebf-4a6c-a7d1-020c5fe343ce" />
+                </div>
+                <div className={`c-tabs__panel${tab === 1 ? " c-tabs__panel--active" : ""}`}>
+                  <Unavailability uid="8d2e8185-9ebf-4a6c-a7d1-020c5fe343ce" />
+                </div>
+              </div>
             </Route>
             <Route path="/calendar">
               <IntegrateCalendar />

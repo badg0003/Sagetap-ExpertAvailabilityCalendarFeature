@@ -1,0 +1,145 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  color: inherit;
+  font-family: inherit;
+  line-height: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.app {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+}
+
+.app__nav {
+  background-color: #fff;
+  padding: 28px 22px
+}
+
+.app__nav > a {
+  display: block;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.1724;
+  color: #646465;
+  text-decoration: none;
+}
+
+.app__logo {
+  display: block;
+  margin: 0 0 2em;
+}
+
+.app__body {
+  background-color: #EFEFEF;
+  padding: 30px 40px;
+}
+
+h1 {
+  margin: 0;
+  color: #000;
+  font-size: 26px;
+  line-height: 34px;
+}
+
+h2 {
+  margin: 0;
+}
+
+.o-button {
+  border: 0;
+  background-color: #008CF5;
+  color: #fff;
+  border-radius: 7px;
+  padding: 12px 18px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.well {
+  border: 1px solid #E2E3E4;
+  border-radius: 12px;
+  background-color: #fff;
+  padding: 36px;
+
+  + .well {
+    margin-top: 36px;
+  }
+}
+
+.o-buttonicon {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.c-tabs {
+  &__nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 127px);
+    gap: 5px;
+
+    &__tab {
+      appearance: none;
+      background-color: transparent;
+      border: 0;
+      border-bottom: 2px solid #A1ABB1;
+      font-size: 0.875rem;
+      line-height: 1.2142;
+      padding: 1rem;
+      cursor: pointer;
+
+      &:focus {
+        outline: 0;
+      }
+
+      &--active {
+        border-bottom-color: #008CF5;
+      }
+    }
+  }
+
+  &__panel {
+    display: none;
+    margin-top: 2.5rem;
+
+    &--active {
+      display: block;
+    }
+  }
+}
+
+.visuallyhidden {
+  border: 0; 
+  clip: rect(0 0 0 0); 
+  clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
+  height: 1px; 
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
+
+  &--focusable:focus,
+  &--focusable:active {
+    clip: auto;
+    clip-path: none;
+    height: auto;
+    margin: auto;
+    overflow: visible;
+    width: auto;
+    white-space: normal;
+  }
+}
