@@ -1,0 +1,9 @@
+.Unavailability {
+
+    &__range {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 1.25rem;
+        align-items: center;
+    }
+}

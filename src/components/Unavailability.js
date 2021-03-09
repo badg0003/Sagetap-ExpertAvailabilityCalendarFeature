@@ -1,3 +1,5 @@
+import './Unavailability.scss'
+
 import { useEffect, useState } from 'react'
 import Firebase from './Firebase'
 import ReactCalendar from 'react-calendar'
@@ -32,7 +34,7 @@ const Unavailability = ({ uid }) => {
         if(from === '' || to === '') return
 
         return (
-            <div>
+            <div className="o-input">
                 <span>{moment(from).format(dateFormat).toString()}</span>
                 <span>&#160;-&#160;</span>
                 <span>{moment(to).format(dateFormat).toString()}</span>
@@ -69,16 +71,16 @@ const Unavailability = ({ uid }) => {
     }
 
     return (
-        <div>
-            <h1>Unavailable days</h1>
+        <div className="Unavailability well">
+            <p style={{marginTop: 0}}>Unavailable days</p>
 
             {unavailability && unavailability.map((range, index) => {
                 return (
                     <div key={index}>
-
-                        {renderDate(range)}
-
-                        <UnavailabilityDelete id={index} onHandleClick={onDeleteEvent} />
+                        <div className="Unavailability__range">                        
+                            {renderDate(range)}
+                            <UnavailabilityDelete id={index} onHandleClick={onDeleteEvent} />
+                        </div>
 
                         <ReactCalendar
                             calendarType="US"

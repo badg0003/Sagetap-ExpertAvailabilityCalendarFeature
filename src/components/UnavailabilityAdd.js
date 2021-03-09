@@ -1,7 +1,7 @@
 const UnavailabilityAdd = ({ onHandleClick }) => {
     return (
         <>
-            <button type="button" onClick={onHandleClick}>Add Dates+</button>
+            <button className="o-button" type="button" onClick={onHandleClick}>Add Dates+</button>
         </>
     )
 }
