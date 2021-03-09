@@ -4,15 +4,21 @@
     &__navigation {
         margin-bottom: 18px;
         
-        &__label {
+        &__label,
+        &__next-button,
+        &__prev-button {
             appearance: none;
             border: 0;
             background: transparent;
             text-align: left;
             padding: 0;
+        }
+
+        &__label {
             font-size: 17px;
             line-height: 20px;
             font-weight: 500;
+            color: #646465;
         }
 
         &__next-button {
@@ -21,6 +27,22 @@
 
         &__prev-button {
             order: 2;
+        }
+
+        &__next-button,
+        &__prev-button {
+            color: #008CF5;
+            font-size: 24px;
+            line-height: 1em;
+            height: 1em;
+            width: 1em;
+            overflow: hidden;
+            text-align: center;
+            outline: 0;
+
+            &[disabled] {
+                color: #92929D;
+            }
         }
     }
 

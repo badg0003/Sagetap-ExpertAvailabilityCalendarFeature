@@ -68,6 +68,7 @@ const CalendarTimeList = ({ date, busy, availability }) => {
         timeSlotsList.push(
             <li key={index}>
                 <input
+                    className="visuallyhidden"
                     type="radio"
                     value={item}
                     id={`timeslot-${index}`}
@@ -81,8 +82,8 @@ const CalendarTimeList = ({ date, busy, availability }) => {
     })
 
     return (
-        <>
-            <ul>
+        <>            
+            <ul className="Calendar__slots">
                 {timeSlotsList.map(item => {
                     return item
                 })}

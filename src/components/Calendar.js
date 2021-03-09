@@ -1,3 +1,4 @@
+import './Calendar.scss'
 import '../styles/calendar.scss'
 
 import { useState, useEffect, useCallback } from "react";
@@ -10,7 +11,7 @@ function Calendar({ uid }) {
     const [gapi, setGapi] = useState(false)
     const [availability, setAvailability] = useState()
     const [unavailability, setUnavailability] = useState()
-    const [value, setDate] = useState(new Date())
+    const [value, setDate] = useState()
     const [activeDate, setActiveDate] = useState(new Date().toISOString())
     const [busy, setBusy] = useState([])
     const [inactiveDate, setInactiveDate] = useState([])
@@ -103,26 +104,46 @@ function Calendar({ uid }) {
     }
 
     const handleOnClickDay = (date) => {
-        console.log('handleOnClickDay', date)
+        // console.log('handleOnClickDay', date)
         setDate(date)
     }
 
     return (
-        <>
-            <ReactCalendar
-                className="c-calendar"
-                calendarType="US"
-                minDate={new Date()}
-                tileDisabled={handleTileDisabled}
-                onClickDay={handleOnClickDay}
-                // onChange={handleOnChange}
-                onActiveStartDateChange={handleOnActiveStartDateChange}
-                next2Label={null}
-                prev2Label={null}
-                value={value} />
+        <div className="well">
+            <div class="Calendar">
+                <div>
+                    <h3>Select a date and time</h3>
+                    <p className="o-text-body1">Sagetap will schedule a follow-up meeting with Leonard for the date and time you select here. Lorem ipsum dolor justo phasellus.</p>
+                    <p className="o-text-h4" style={{ marginTop: '24px', display: 'flex', alignItems: 'center' }}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '15px' }}>
+                            <path d="M10 0C4.5 0 0 4.5 0 10C0 15.5 4.5 20 10 20C15.5 20 20 15.5 20 10C20 4.5 15.5 0 10 0ZM10 18C5.59 18 2 14.41 2 10C2 5.59 5.59 2 10 2C14.41 2 18 5.59 18 10C18 14.41 14.41 18 10 18ZM10.5 5H9V11L14.2 14.2L15 12.9L10.5 10.2V5Z" fill="#008CF5" />
+                        </svg>
+                        60 min
+                    </p>
+                </div>
 
-            <CalendarTimeList date={value} busy={busy} availability={availability} />
-        </>
+                <div>
+                    <ReactCalendar
+                        className="c-calendar"
+                        calendarType="US"
+                        minDate={new Date()}
+                        minDetail="year"
+                        tileDisabled={handleTileDisabled}
+                        onClickDay={handleOnClickDay}
+                        // onChange={handleOnChange}
+                        onActiveStartDateChange={handleOnActiveStartDateChange}
+                        next2Label={null}
+                        prev2Label={null}
+                        value={value} />
+                </div>
+
+                {value ? <div>
+                    <h4 class="o-text-h4" style={{ color: '#646465' }}>Tuesday, July 16</h4>
+                    <p className="o-text-body2">Leonard’s available slots</p>
+                    <CalendarTimeList date={value} busy={busy} availability={availability} />
+                </div> : ''}
+            </div>
+        </div>
     )
 }
 
