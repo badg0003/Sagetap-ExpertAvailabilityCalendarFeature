@@ -31,6 +31,11 @@ body {
   line-height: 1.1724;
   color: #646465;
   text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  height: 48px;
+  justify-content: center;
+  border-radius: 0.5rem;
 }
 
 .app__logo {
@@ -105,6 +110,7 @@ h2 {
       }
 
       &--active {
+        color: #008CF5;
         border-bottom-color: #008CF5;
       }
     }
@@ -118,6 +124,16 @@ h2 {
       display: block;
     }
   }
+}
+
+.o-input {
+  // height: 44px;
+  color: #646465;
+  padding: 10px 16px;
+  background-color: #fff;
+  border: 1px solid #E2E3E4;
+  border-radius: 8px;
+  text-align: center;
 }
 
 .visuallyhidden {

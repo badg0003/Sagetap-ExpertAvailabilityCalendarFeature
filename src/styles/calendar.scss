@@ -1,0 +1,96 @@
+.react-calendar {
+    width: 300px;
+
+    &__navigation {
+        margin-bottom: 18px;
+        
+        &__label {
+            appearance: none;
+            border: 0;
+            background: transparent;
+            text-align: left;
+            padding: 0;
+            font-size: 17px;
+            line-height: 20px;
+            font-weight: 500;
+        }
+
+        &__next-button {
+            order: 3;
+        }
+
+        &__prev-button {
+            order: 2;
+        }
+    }
+
+    &__month-view {
+
+        &__weekdays {
+            gap: 8px;
+
+            &__weekday {
+                text-align: center;
+                font-size: 12px;
+                line-height: 22px;
+                color: #92929D;
+
+                > abbr {
+                    text-decoration: none;
+                }
+            }
+        }
+
+        &__days {
+            gap: 8px;
+
+            &__day {
+                background: #F0F8FD;
+                border: 1px solid rgba(0, 140, 245, 0.3);
+                border-radius: 4px;
+                height: 36px;
+                width: 36px;
+                flex-basis: auto !important;
+                max-width: none !important;
+                padding: 0;
+                font-size: 14px;
+                line-height: 24px;
+                color: #008CF5;
+
+                &:focus {
+                    border-color: #008CF5;
+                    outline: 0;
+                }
+
+                &[disabled] {
+                    background-color: #fff;
+                    border-color: #E2E3E4;
+                    color: #B5B5B5;
+                }
+            }
+        }
+    }
+
+    &__tile {
+
+        &--active {
+            background-color: #008CF5;
+            color: #fff;            
+        }
+
+        &--now {
+            position: relative;
+
+            &::after {
+                content: "";
+                height: 3px;
+                width: 3px;
+                position: absolute;
+                background: currentColor;
+                left: 50%;
+                bottom: 5px;
+                transform: translateX(-50%)
+            }
+        }
+    }
+}

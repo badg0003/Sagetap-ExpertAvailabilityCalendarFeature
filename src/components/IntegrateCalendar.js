@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react'
 
 // Ref: https://ncoughlin.com/posts/react-user-authentication-oauth/
 
-// TODO: Convert to environment variables
-
 // Client ID and API key from the Developer Console
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
@@ -81,13 +79,13 @@ const IntegrateCalendar = () => {
     const renderAddCalendarButton = () => {
         if (auth) {
             return (
-                <button onClick={handleDisconnect}>
+                <button className="o-button" onClick={handleDisconnect}>
                     Disconnect
                 </button>
             )
         } else {
             return (
-                <button onClick={handleConnect}>
+                <button className="o-button" onClick={handleConnect}>
                     Add calendar account+
                 </button>
             )
@@ -95,9 +93,11 @@ const IntegrateCalendar = () => {
     }
 
     return (
-        <>
+        <div className="well">
+            <h1>Calendar</h1>
+            <p>Connect your Google Calendar to let us know when you are available, and update your calendar as you get bookings and host streams.</p>
             {renderAddCalendarButton()}
-        </>
+        </div>
     )
 }
 

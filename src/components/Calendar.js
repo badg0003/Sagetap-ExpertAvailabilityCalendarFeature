@@ -1,3 +1,5 @@
+import '../styles/calendar.scss'
+
 import { useState, useEffect, useCallback } from "react";
 import Firebase from './Firebase'
 import moment from 'moment'
@@ -108,12 +110,15 @@ function Calendar({ uid }) {
     return (
         <>
             <ReactCalendar
+                className="c-calendar"
                 calendarType="US"
                 minDate={new Date()}
                 tileDisabled={handleTileDisabled}
                 onClickDay={handleOnClickDay}
                 // onChange={handleOnChange}
                 onActiveStartDateChange={handleOnActiveStartDateChange}
+                next2Label={null}
+                prev2Label={null}
                 value={value} />
 
             <CalendarTimeList date={value} busy={busy} availability={availability} />
