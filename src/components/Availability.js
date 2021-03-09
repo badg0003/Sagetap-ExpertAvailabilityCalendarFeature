@@ -1,3 +1,5 @@
+import './Availability.scss'
+
 import { useState, useEffect, useCallback } from 'react'
 import Firebase from './Firebase'
 
@@ -103,13 +105,15 @@ const Availability = ({ uid }) => {
 
         weekdays.forEach((weekday, abbr) => {
             weekdayList.push(
-                <div key={abbr}>
-                    <h2>{weekday}</h2>
-                    <AvailabilityToggle onHandleToggle={onToggleEvent} day={abbr} value={availability[abbr].enabled} />
+                <div className="well" key={abbr}>
+                    <div className="Availability__header">
+                        <h2>{weekday}</h2>
+                        <AvailabilityToggle onHandleToggle={onToggleEvent} day={abbr} value={availability[abbr].enabled} />
+                    </div>
 
                     {availability[abbr].enabled ?
-                        <div>
-                            <ul>
+                        <div className="Availability__body">
+                            <ul className="Availability__timeslot">
                                 {availability[abbr].ranges.map((range, index) => {
                                     return <li key={index}>
                                         <AvailabilitySelect
