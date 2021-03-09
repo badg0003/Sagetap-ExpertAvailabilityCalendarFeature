@@ -1,0 +1,29 @@
+.o-select {
+	display: block;
+	font-size: 0.875;
+	line-height: 1.7142;
+	color: #646465;
+	padding: 0.625rem 1rem;
+	width: 100%;
+	max-width: 100%;
+	margin: 0;
+	border: 1px solid #E2E3E4;
+	border-radius: 0.5rem;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+    background: #fff url('../images/select-dropdown-arrow.svg') calc(100% - 1rem) 50%/0.75rem 0.4375rem no-repeat;
+}
+.o-select::-ms-expand {
+	display: none;
+}
+.o-select:hover {
+	border-color: #888;
+}
+.o-select:focus {
+	border-color: #aaa;
+	box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+	box-shadow: 0 0 0 3px -moz-mac-focusring;
+	color: #222;
+	outline: none;
+}

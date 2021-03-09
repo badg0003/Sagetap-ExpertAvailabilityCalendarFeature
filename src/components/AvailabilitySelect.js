@@ -1,8 +1,10 @@
+import '../styles/select.scss'
+
 function AvailabilitySelect({ value, data, onHandleChange, day, dayIndex, type }) {  
     return (
         <>
             {console.log('render')}
-            <select value={value} onChange={(e) => onHandleChange(e.target.value, day, dayIndex, type)}>
+            <select className="o-select" value={value} onChange={(e) => onHandleChange(e.target.value, day, dayIndex, type)}>
                 {data.map((item, index) => {
                     return <option key={index} value={item}>{item}</option>
                 })}
