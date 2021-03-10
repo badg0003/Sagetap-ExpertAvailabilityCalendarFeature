@@ -266,6 +266,28 @@ h3 {
   }
 }
 
+.cta {
+  /* /White */
+display: block;
+background: #FFFFFF;
+/* Neutral/Lighter */
+
+border: 1px solid #E2E3E4;
+padding: 36px;
+box-shadow: 0px 4px 40px -10px rgba(0, 0, 0, 0.25);
+border-radius: 12px;
+text-decoration: none;
+width: 400px;
+transition: box-shadow 0.35s ease-in-out;
+&:hover {
+  box-shadow: none;
+}
+
+&:not(:last-child) {
+  margin-bottom: 36px
+}
+}
+
 .visuallyhidden {
   border: 0; 
   clip: rect(0 0 0 0); 
