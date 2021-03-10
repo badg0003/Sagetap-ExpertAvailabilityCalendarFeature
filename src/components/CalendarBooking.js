@@ -1,8 +1,9 @@
 const CalendarBooking = () => {
     return (
-        <form>
-            <legend>Provide booking details</legend>
-            <div>
+        <form className="well">
+            <h2>Provide booking details</h2>
+
+            <div style={{ marginTop: '24px' }}>
                 <label className="o-label" htmlFor="firstname">First Name</label>
                 <input className="o-input" name="firstname" id="firstname" type="text" value="" required />
             </div>
@@ -19,7 +20,7 @@ const CalendarBooking = () => {
 
             <div style={{ marginTop: '24px' }}>
                 <label className="o-label" htmlFor="message">What would you like the call to be about?</label>
-                <textarea class="o-input o-input--multiline" name="message" id="message"></textarea>
+                <textarea className="o-input o-input--multiline" name="message" id="message"></textarea>
             </div>
 
             <div style={{ marginTop: '24px' }}>
@@ -29,11 +30,11 @@ const CalendarBooking = () => {
 
             <div style={{ marginTop: '24px' }}>
                 <input name="terms" id="terms" type="checkbox" />
-                <label className="o-text-body2" htmlFor="terms">I agree with Sagetap <a href="#" target="_blank">Terms of Service</a></label>
+                <label className="o-text-body2" htmlFor="terms">I agree with Sagetap Terms of Service</label>
             </div>
 
             <div style={{ marginTop: '24px' }}>
-                <button class="o-button" type="submit">Create Booking</button>
+                <button className="o-button" type="submit">Create Booking</button>
             </div>
         </form>
     )

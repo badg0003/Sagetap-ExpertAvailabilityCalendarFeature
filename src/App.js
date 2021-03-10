@@ -57,8 +57,8 @@ function App() {
               <Home />
             </Route>
             <Route path="/availability">
-              <h1>Availability</h1>
-              <p>We only allow bookings within your availability that you set below, and at least 16 hours away to give you time to accept new requests.</p>
+              <h1 className="o-text-h1">Availability</h1>
+              <p className="o-text-lead" style={{ marginTop: 0, marginBottom: '60px' }}>We only allow bookings within your availability that you set below, and at least 16 hours away to give you time to accept new requests.</p>
 
               <div className="c-tabs">
                 <nav className="c-tabs__nav">

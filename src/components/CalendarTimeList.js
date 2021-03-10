@@ -1,6 +1,9 @@
+import {
+    BrowserRouter as Link
+  } from "react-router-dom";
+
 import { useState } from 'react'
 import moment from 'moment'
-import CalendarBooking from './CalendarBooking'
 
 const CalendarTimeList = ({ date, busy, availability }) => {
     const [timeslot, setTimeslot] = useState()
@@ -76,19 +79,18 @@ const CalendarTimeList = ({ date, busy, availability }) => {
                     onChange={(e) => setTimeslot(e.target.value)} />
                 <label htmlFor={`timeslot-${index}`}>{item}</label>
                 {timeslot === item ?
-                    <button type="button">Confirm</button> : ''}
+                    <Link className="o-button" to="/book-meeting/create" style={{ minHeight: 0, height: '37px' }}>Confirm</Link> : ''}
             </li>
         )
     })
 
     return (
-        <>            
+        <>
             <ul className="Calendar__slots">
                 {timeSlotsList.map(item => {
                     return item
                 })}
-            </ul>
-            <CalendarBooking />
+            </ul>            
         </>
     )
 }
