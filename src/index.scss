@@ -24,18 +24,39 @@ body {
   padding: 28px 22px
 }
 
-.app__nav > a {
+.app__nav > a:not(:first-child) {
   display: block;
   font-weight: 500;
   font-size: 14px;
   line-height: 1.1724;
   color: #646465;
   text-decoration: none;
-  display: flex;
-  flex-direction: column;
   height: 48px;
-  justify-content: center;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 17px auto;
+  gap: 9px;
+  align-items: center;
   border-radius: 0.5rem;
+
+  &.active {
+    background: #F0F8FD;
+    color: #171725;
+
+    > svg {
+      fill: #008CF5;
+    }
+  }
+
+  > svg {
+    fill: #92929D;
+    max-height: 100%;
+    max-width: 100%;
+  }
+}
+.app__nav > a:first-child {
+  display: block;
+  margin-left: 16px;
 }
 
 .app__logo {
@@ -99,6 +120,7 @@ h3 {
   align-items: center;
   justify-content: center;
   font-weight: 500;
+  text-decoration: none;
 }
 
 .well {
