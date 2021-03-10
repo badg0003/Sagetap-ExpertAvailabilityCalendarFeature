@@ -8,6 +8,7 @@
 }
 
 body {
+  color: #646465;
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
@@ -90,6 +91,27 @@ h3 {
   line-height: 20px;
 }
 
+.o-text-h1 {
+  color: #008CF5;
+  font-size: 30px;
+  line-height: 34px;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+
+.o-text-h2 {
+  color: #008CF5;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 34px;
+  margin-bottom: 4px;
+}
+
+.o-text-lead {
+  font-size: 20px;
+  line-height: 34px;
+}
+
 .o-text-body1 {
   color: #646465;
   font-size: 14px;
@@ -121,6 +143,26 @@ h3 {
   justify-content: center;
   font-weight: 500;
   text-decoration: none;
+  cursor: pointer;
+  
+  &--link {
+    background-color: transparent;
+    border-radius: 0;
+    min-height: 0;
+    padding: 0;
+    color: #171725;
+    font-size: 14px;
+    line-height: 17px;
+    outline: 0;
+
+    &:focus, &:hover {
+      color: #008CF5;
+    }
+
+    > svg {
+      margin-right: 1em;
+    }
+  }
 }
 
 .well {
@@ -138,6 +180,7 @@ h3 {
   background-color: transparent;
   border: 0;
   padding: 0;
+  cursor: pointer;
 }
 
 .c-tabs {
@@ -193,6 +236,11 @@ h3 {
   color: #171725;
   display: block;
   margin-bottom: 8px;
+}
+
+.IntegrateCalendar__head {
+  display: grid;
+  grid-template-columns: 1fr auto;
 }
 
 .visuallyhidden {
