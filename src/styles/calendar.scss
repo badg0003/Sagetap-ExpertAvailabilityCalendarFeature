@@ -49,6 +49,8 @@
     &__month-view {
 
         &__weekdays {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, 36px);
             gap: 8px;
 
             &__weekday {
@@ -56,6 +58,7 @@
                 font-size: 12px;
                 line-height: 22px;
                 color: #92929D;
+                max-width: none !important;
 
                 > abbr {
                     text-decoration: none;
@@ -64,6 +67,8 @@
         }
 
         &__days {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, 36px);
             gap: 8px;
 
             &__day {

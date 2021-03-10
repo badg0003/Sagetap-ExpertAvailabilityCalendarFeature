@@ -5,16 +5,20 @@ import { useState, useEffect, useCallback } from "react";
 import Firebase from './Firebase'
 import moment from 'moment'
 import ReactCalendar from 'react-calendar'
-import CalendarTimeList from "./CalendarTimeList";
+import CalendarTimeList from "./CalendarTimeList"
+import CalendarBooking from './CalendarBooking'
 
 function Calendar({ uid }) {
     const [gapi, setGapi] = useState(false)
+    const [profile, setProfile] = useState()
     const [availability, setAvailability] = useState()
     const [unavailability, setUnavailability] = useState()
     const [value, setDate] = useState()
     const [activeDate, setActiveDate] = useState(new Date().toISOString())
     const [busy, setBusy] = useState([])
     const [inactiveDate, setInactiveDate] = useState([])
+    const [bookingForm, setBookingForm] = useState(false)
+    const [bookingTime, setBookingTime] = useState('')
 
     // const [activeStartDate, setActiveStartDate] = useState()
 
@@ -25,10 +29,14 @@ function Calendar({ uid }) {
             querySnapshot.forEach((doc) => {
                 setAvailability(doc.data().availability)
                 setUnavailability(doc.data().unavailability)
+                setProfile(doc.data())
             })
         })
 
         window.gapi.load("client:auth2", () => {
+            window.gapi.client.setToken({
+                'access_token': profile.responseToken
+            })
             window.gapi.client.init({
                 apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
                 clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
@@ -36,11 +44,13 @@ function Calendar({ uid }) {
                 scope: "https://www.googleapis.com/auth/calendar"
             }).then(() => {
                 setGapi(true)
-                loadGCalEvents(value)
+                if (value) {
+                    loadGCalEvents(value)
+                }
             })
         })
 
-    }, [])
+    }, [value, uid])
 
     /**
      * Filter unavailability date(s) to determine if any belong to the current
@@ -66,6 +76,8 @@ function Calendar({ uid }) {
         }).then((response) => {
             console.log('gapi', response)
             setBusy(response.result.calendars.primary.busy)
+        }).catch((error) => {
+            console.error("Error loading freeBusy state: ", error);
         })
     }
 
@@ -108,6 +120,47 @@ function Calendar({ uid }) {
         setDate(date)
     }
 
+    const handleOnClickTime = (time) => {
+        setBookingForm(true)
+        setBookingTime(time)
+    }
+
+    const handleBookingSubmit = (e) => {
+        e.preventDefault()
+        const formValues = e.target.elements
+        const hours = moment(bookingTime, 'H:mm a').hours()
+        const timeStart = moment(value)
+        const timeEnd = moment(value)
+        timeStart.hours(hours)
+        timeEnd.hours(hours + 1)
+
+        // Check for gapi and push new event to API
+        if (gapi) {
+            console.log(value, bookingTime, timeStart)
+            // https://developers.google.com/calendar/v3/reference/events/insert
+            window.gapi.client.calendar.events.insert({
+                'calendarId': profile.calendarId,
+                'end': {
+                    'dateTime': timeEnd
+                },
+                'start': {
+                    'dateTime': timeStart
+                },
+                'attendees': [{
+                    'email': formValues.email.value,
+                    'displayName': `${formValues.firstname.value} ${formValues.lastname.value}`,
+                    'responseStatus': 'needsAction'
+                }],
+                'summary': `${formValues.firstname.value} ${formValues.lastname.value} // Sagetap`,
+                'description': `Hello Test ${formValues.message.value}`,
+            }).then((response) => {
+                console.log('GCal response', response)
+            }).catch((error) => {
+                console.error("Error creating Google Calendar event: ", error);
+            })
+        }
+    }
+
     return (
         <>
             <h1 className="o-text-h1">Book Meeting</h1>
@@ -143,8 +196,10 @@ function Calendar({ uid }) {
                     {value ? <div>
                         <h4 className="o-text-h4" style={{ color: '#646465' }}>{moment(value).format('dddd, MMMM D').toString()}</h4>
                         <p className="o-text-body2">Leonard’s available slots</p>
-                        <CalendarTimeList date={value} busy={busy} availability={availability} />
+                        <CalendarTimeList date={value} busy={busy} availability={availability} onHandleClick={handleOnClickTime} />
                     </div> : ''}
+
+                    {bookingForm ? <div className="modal"><CalendarBooking onHandleSubmit={handleBookingSubmit} /> </div> : ''}
                 </div>
             </div>
         </>

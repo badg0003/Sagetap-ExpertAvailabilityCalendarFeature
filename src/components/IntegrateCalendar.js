@@ -52,9 +52,11 @@ const IntegrateCalendar = () => {
     }
 
     const handleConnect = () => {
-        window.gapi.auth2.getAuthInstance().signIn().then(() => {
+        window.gapi.auth2.getAuthInstance().signIn().then((response) => {
+            const responseToken
+             = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token
 
-            // Get primary calendar
+             // Get primary calendar
             window.gapi.client.calendar.calendarList.get({
                 'calendarId': 'primary'
             }).then((response) => {
@@ -69,7 +71,8 @@ const IntegrateCalendar = () => {
                         querySnapshot.forEach((doc) => {
                             setCalendar(response.result.id)
                             doc.ref.update({
-                                "calendarId": response.result.id
+                                "calendarId": response.result.id,
+                                "responseToken": responseToken
                             })
                         })
                     })

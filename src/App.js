@@ -10,7 +10,6 @@ import IntegrateCalendar from './components/IntegrateCalendar'
 import Calendar from './components/Calendar'
 import Availability from './components/Availability'
 import Unavailability from './components/Unavailability'
-import CalendarBooking from './components/CalendarBooking'
 
 import { ReactComponent as Logo } from './logo.svg';
 import { useState } from "react";
@@ -79,9 +78,9 @@ function App() {
             <Route exact path="/book-meeting">
               <Calendar uid="8d2e8185-9ebf-4a6c-a7d1-020c5fe343ce" />
             </Route>
-            <Route path="/book-meeting/create">
+            {/* <Route path="/book-meeting/create">
               <CalendarBooking />
-            </Route>
+            </Route> */}
           </Switch>
         </main>
       </div>

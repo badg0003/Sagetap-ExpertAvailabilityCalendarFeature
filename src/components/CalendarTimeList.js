@@ -1,9 +1,7 @@
-
-import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import moment from 'moment'
 
-const CalendarTimeList = ({ date, busy, availability }) => {
+const CalendarTimeList = ({ date, busy, availability, onHandleClick }) => {
     const [timeslot, setTimeslot] = useState()
 
     const TIME_FORMAT = 'hh:mm A'
@@ -77,7 +75,7 @@ const CalendarTimeList = ({ date, busy, availability }) => {
                     onChange={(e) => setTimeslot(e.target.value)} />
                 <label htmlFor={`timeslot-${index}`}>{item}</label>
                 {timeslot === item ?
-                    <Link className="o-button" to="/book-meeting/create" style={{ minHeight: 0, height: '37px' }}>Confirm</Link> : ''}
+                    <button className="o-button" type="button" onClick={() => onHandleClick(item)} style={{ minHeight: 0, height: '37px', outline: 0 }}>Confirm</button> : ''}
             </li>
         )
     })
@@ -88,7 +86,7 @@ const CalendarTimeList = ({ date, busy, availability }) => {
                 {timeSlotsList.map(item => {
                     return item
                 })}
-            </ul>            
+            </ul>
         </>
     )
 }
