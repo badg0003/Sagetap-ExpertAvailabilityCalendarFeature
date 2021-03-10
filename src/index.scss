@@ -68,6 +68,10 @@ body {
 .app__body {
   background-color: #EFEFEF;
   padding: 30px 40px;
+
+  &__layout {
+    width: 1024px;
+  }
 }
 
 h1, h2, h3, h4 {
@@ -254,6 +258,12 @@ h3 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  > .well {
+    width: 600px;
+    position: relative;
+    animation: modalLoad 0.5s ease-in forwards;
+  }
 }
 
 .visuallyhidden {
@@ -277,5 +287,16 @@ h3 {
     overflow: visible;
     width: auto;
     white-space: normal;
+  }
+}
+
+@keyframes modalLoad {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

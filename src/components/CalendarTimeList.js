@@ -75,7 +75,7 @@ const CalendarTimeList = ({ date, busy, availability, onHandleClick }) => {
                     onChange={(e) => setTimeslot(e.target.value)} />
                 <label htmlFor={`timeslot-${index}`}>{item}</label>
                 {timeslot === item ?
-                    <button className="o-button" type="button" onClick={() => onHandleClick(item)} style={{ minHeight: 0, height: '37px', outline: 0 }}>Confirm</button> : ''}
+                    <button className="o-button" type="button" onClick={() => { onHandleClick(item); setTimeslot('') }} style={{ minHeight: 0, height: '37px', outline: 0 }}>Confirm</button> : ''}
             </li>
         )
     })

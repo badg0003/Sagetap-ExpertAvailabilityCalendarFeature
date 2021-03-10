@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const CalendarBooking = ({ onHandleSubmit }) => {
+const CalendarBooking = ({ onHandleSubmit, selDate }) => {
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
     const [email, setEmail] = useState('')
@@ -8,8 +8,9 @@ const CalendarBooking = ({ onHandleSubmit }) => {
     const [phone, setPhone] = useState('')
 
     return (
-        <form className="well" onSubmit={(e) => onHandleSubmit(e)}>
-            <h2>Provide booking details</h2>
+        <form onSubmit={(e) => onHandleSubmit(e)}>
+            <h2 className="o-text-h2">Provide booking details</h2>
+            <p className="o-text-lead" style={{ marginTop: 0 }}>{selDate}</p>
 
             <div style={{ marginTop: '24px' }}>
                 <label className="o-label" htmlFor="firstname">First Name</label>

@@ -84,7 +84,7 @@ const IntegrateCalendar = () => {
                  * Set Acl for freeBusyReader access
                  * @see https://developers.google.com/calendar/v3/reference/acl/insert
                  */
-
+                
                 window.gapi.client.calendar.acl.insert({
                     'calendarId': 'primary',
                     'role': 'freeBusyReader',

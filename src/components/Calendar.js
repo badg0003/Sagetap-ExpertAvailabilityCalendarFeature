@@ -19,8 +19,7 @@ function Calendar({ uid }) {
     const [inactiveDate, setInactiveDate] = useState([])
     const [bookingForm, setBookingForm] = useState(false)
     const [bookingTime, setBookingTime] = useState('')
-
-    // const [activeStartDate, setActiveStartDate] = useState()
+    const [bookingSuccess, setBookingSuccess] = useState(false)
 
     useEffect(() => {
         const db = Firebase.firestore()
@@ -32,6 +31,11 @@ function Calendar({ uid }) {
                 setProfile(doc.data())
             })
         })
+
+    }, [uid])
+
+    useEffect(() => {
+        if (!profile || !profile.responseToken) return
 
         window.gapi.load("client:auth2", () => {
             window.gapi.client.setToken({
@@ -49,8 +53,7 @@ function Calendar({ uid }) {
                 }
             })
         })
-
-    }, [value, uid])
+    }, [value, profile])
 
     /**
      * Filter unavailability date(s) to determine if any belong to the current
@@ -74,7 +77,7 @@ function Calendar({ uid }) {
                 "id": "primary"
             }]
         }).then((response) => {
-            console.log('gapi', response)
+            // console.log('gapi', response)
             setBusy(response.result.calendars.primary.busy)
         }).catch((error) => {
             console.error("Error loading freeBusy state: ", error);
@@ -136,7 +139,7 @@ function Calendar({ uid }) {
 
         // Check for gapi and push new event to API
         if (gapi) {
-            console.log(value, bookingTime, timeStart)
+            // console.log(value, bookingTime, timeStart)
             // https://developers.google.com/calendar/v3/reference/events/insert
             window.gapi.client.calendar.events.insert({
                 'calendarId': profile.calendarId,
@@ -154,7 +157,10 @@ function Calendar({ uid }) {
                 'summary': `${formValues.firstname.value} ${formValues.lastname.value} // Sagetap`,
                 'description': `Hello Test ${formValues.message.value}`,
             }).then((response) => {
-                console.log('GCal response', response)
+                // Success
+                // console.log('GCal response', response)
+                setBookingForm(false)
+                setBookingSuccess(true)
             }).catch((error) => {
                 console.error("Error creating Google Calendar event: ", error);
             })
@@ -199,7 +205,26 @@ function Calendar({ uid }) {
                         <CalendarTimeList date={value} busy={busy} availability={availability} onHandleClick={handleOnClickTime} />
                     </div> : ''}
 
-                    {bookingForm ? <div className="modal"><CalendarBooking onHandleSubmit={handleBookingSubmit} /> </div> : ''}
+                    {bookingForm ? <div className="modal">
+                        <div className="well">
+                            <button className="o-buttonicon" style={{ position: 'absolute', top: '36px', right: '36px' }} onClick={() => setBookingForm(false)}>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="#92929D" />
+                                </svg>
+                            </button>
+                            <CalendarBooking onHandleSubmit={handleBookingSubmit} selDate={`${moment(value).format('dddd, MMMM Do').toString()} @ ${bookingTime}`} />
+                        </div>
+                    </div> : ''}
+
+                    {bookingSuccess ? <div className="modal">
+                        <div className="well">
+                            <h2 className="o-text-h2" style={{ textAlign: 'center' }}>Booking confirmed!</h2>
+                            <p className="o-text-lead" style={{marginTop:0,textAlign:'center'}}>{moment(value).format('dddd, MMMM Do').toString()} @ {bookingTime}</p>
+                            <p style={{textAlign:'center'}}>
+                                <button className="o-button" type="button" onClick={() => setBookingSuccess(false)}>Close</button>
+                            </p>
+                        </div>
+                    </div> : ''}
                 </div>
             </div>
         </>
