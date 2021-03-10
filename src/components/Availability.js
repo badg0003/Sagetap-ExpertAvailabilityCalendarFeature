@@ -79,7 +79,22 @@ const Availability = ({ uid }) => {
                     ranges: availability[day].ranges.filter((item, index) => index !== dayIndex)
                 }
             }
-            setAvailability(newData)
+            const db = Firebase.firestore()
+
+            db.collection("experts").where("uid", "==", uid)
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        setAvailability(newData)
+
+                        doc.ref.update({
+                            "availability": newData
+                        })
+                    })
+                })
+                .catch((error) => {
+                    console.log("Error getting documents: ", error);
+                })
         }
 
         const onToggleEvent = (day, val) => {
@@ -91,14 +106,45 @@ const Availability = ({ uid }) => {
                     enabled: val
                 }
             }
-            setAvailability(newData)
+
+            const db = Firebase.firestore()
+
+            db.collection("experts").where("uid", "==", uid)
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        setAvailability(newData)
+
+                        doc.ref.update({
+                            "availability": newData
+                        })
+                    })
+                })
+                .catch((error) => {
+                    console.log("Error getting documents: ", error);
+                })
         }
 
         const onChangeEvent = (val, day, dayIndex, type) => {
             const newData = availability
             newData[day].ranges[dayIndex][type] = val
 
-            setAvailability({...newData})
+            const db = Firebase.firestore()
+
+            db.collection("experts").where("uid", "==", uid)
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        setAvailability({ ...newData })
+
+                        doc.ref.update({
+                            "availability": newData
+                        })
+                    })
+                })
+                .catch((error) => {
+                    console.log("Error getting documents: ", error);
+                })
         }
 
         const weekdayList = []
