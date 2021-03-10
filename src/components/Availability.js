@@ -72,11 +72,13 @@ const Availability = ({ uid }) => {
         }
 
         const onDeleteEvent = (day, dayIndex) => {
+            const newRanges = availability[day].ranges.filter((item, index) => index !== dayIndex)
+
             const newData = {
                 ...availability,
                 [day]: {
                     ...availability[day],
-                    ranges: availability[day].ranges.filter((item, index) => index !== dayIndex)
+                    ranges: newRanges
                 }
             }
             const db = Firebase.firestore()
@@ -90,6 +92,10 @@ const Availability = ({ uid }) => {
                         doc.ref.update({
                             "availability": newData
                         })
+
+                        if (newRanges.length === 0) {
+                            onToggleEvent(day, false)
+                        }
                     })
                 })
                 .catch((error) => {
@@ -98,13 +104,16 @@ const Availability = ({ uid }) => {
         }
 
         const onToggleEvent = (day, val) => {
-            console.log(val);
             const newData = {
                 ...availability,
                 [day]: {
                     ...availability[day],
                     enabled: val
                 }
+            }
+
+            if (val && availability[day].ranges.length === 0) {
+                onAddEvent(day)
             }
 
             const db = Firebase.firestore()
@@ -190,14 +199,14 @@ const Availability = ({ uid }) => {
             )
         })
 
-        console.log('Render weekdays')
+        // console.log('Render weekdays')
 
         return (
             <>
                 {weekdayList}
             </>
         )
-    }, [availability])
+    }, [availability, uid])
 
 
     useEffect(() => {
@@ -217,7 +226,7 @@ const Availability = ({ uid }) => {
 
     return (
         <>
-            {console.log('render')}
+            {/* {console.log('render')} */}
             {renderWeekdays()}
         </>
     )
