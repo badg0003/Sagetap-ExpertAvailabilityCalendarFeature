@@ -116,3 +116,17 @@
         }
     }
 }
+
+// Temp
+.popover {
+    background-color: #fff;
+    padding: 20px;
+    position: absolute;
+    z-index: 99;
+    border-radius: 8px;
+    visibility: hidden;
+
+    &--active {
+        visibility: visible;
+    }
+}

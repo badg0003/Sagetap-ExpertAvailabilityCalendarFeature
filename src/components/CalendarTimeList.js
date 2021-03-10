@@ -1,7 +1,5 @@
-import {
-    BrowserRouter as Link
-  } from "react-router-dom";
 
+import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import moment from 'moment'
 
