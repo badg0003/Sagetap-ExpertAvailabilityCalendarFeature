@@ -66,11 +66,17 @@ body {
 }
 
 .app__body {
-  background-color: #EFEFEF;
-  padding: 30px 40px;
+  background-color: #f5f7f8;
+  padding: 30px 40px 30px 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   &__layout {
     width: 1024px;
+
+    &--center {
+    }
   }
 }
 
@@ -100,7 +106,7 @@ h3 {
   font-size: 30px;
   line-height: 34px;
   font-weight: 700;
-  margin-bottom: 28px;
+  margin-bottom: 8px;
 }
 
 .o-text-h2 {
@@ -112,8 +118,11 @@ h3 {
 }
 
 .o-text-lead {
+  color: #646465;
   font-size: 20px;
   line-height: 34px;
+  margin-top: 0;
+  -webkit-font-smoothing: antialiased;
 }
 
 .o-text-body1 {
@@ -148,6 +157,11 @@ h3 {
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
+
+  &:hover {
+    opacity: 0.6;
+    transition: opacity 0.15s ease-in-out;
+  }
   
   &--link {
     background-color: transparent;
@@ -160,6 +174,7 @@ h3 {
     outline: 0;
 
     &:focus, &:hover {
+      opacity: 1;
       color: #008CF5;
     }
 
@@ -274,18 +289,19 @@ background: #FFFFFF;
 
 border: 1px solid #E2E3E4;
 padding: 36px;
-box-shadow: 0px 4px 40px -10px rgba(0, 0, 0, 0.25);
 border-radius: 12px;
 text-decoration: none;
-width: 400px;
-transition: box-shadow 0.35s ease-in-out;
+// width: 400px;
 &:hover {
   box-shadow: none;
 }
 
-&:not(:last-child) {
-  margin-bottom: 36px
 }
+
+.cta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
 }
 
 .visuallyhidden {

@@ -105,13 +105,25 @@
 
     &__tile {
 
-        &--active,
-        &--rangeEnd,
-        &--hover,
-        &--hoverEnd {
+        &--active {
             background-color: #008CF5;
             color: #fff;            
         }
+
+        &--range {
+            opacity: 0.4;
+            transition: opacity 0.15s ease-in-out;
+        }
+
+        &--hover {
+            opacity: 0.6;
+        }
+
+        &--rangeStart,
+        &--rangeEnd {
+            opacity: 1;
+        }
+        
 
         &--now {
             position: relative;
@@ -126,6 +138,12 @@
                 bottom: 5px;
                 transform: translateX(-50%)
             }
+        }
+
+        &:not(:disabled):not(.react-calendar__month-view__days__day--neighboringMonth):not(.react-calendar__tile--active):hover {
+            opacity: 0.6;
+            cursor: pointer;
+            transition: opacity 0.15s ease-in-out;
         }
     }
 }

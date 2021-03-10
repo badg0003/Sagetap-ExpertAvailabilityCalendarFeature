@@ -35,6 +35,12 @@
                 border-radius: 7px;
                 color: #008CF5;
                 cursor: pointer;
+
+                &:hover {
+                    opacity: 0.6;
+                    cursor: pointer;
+                    transition: opacity 0.15s ease-in-out;
+                }
             }
         }
     }
