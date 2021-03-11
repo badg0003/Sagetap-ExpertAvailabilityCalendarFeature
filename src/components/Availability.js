@@ -83,10 +83,9 @@ const Availability = ({ uid }) => {
             }
             const db = Firebase.firestore()
 
-            db.collection("experts").where("uid", "==", uid)
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
+            db.collection("experts").doc(uid).get()
+                .then((doc) => {
+                    if (doc.exists) {
                         setAvailability(newData)
 
                         doc.ref.update({
@@ -96,7 +95,7 @@ const Availability = ({ uid }) => {
                         if (newRanges.length === 0) {
                             onToggleEvent(day, false)
                         }
-                    })
+                    }
                 })
                 .catch((error) => {
                     console.log("Error getting documents: ", error);
@@ -118,16 +117,15 @@ const Availability = ({ uid }) => {
 
             const db = Firebase.firestore()
 
-            db.collection("experts").where("uid", "==", uid)
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
+            db.collection("experts").doc(uid).get()
+                .then((doc) => {
+                    if (doc.exists) {
                         setAvailability(newData)
 
                         doc.ref.update({
                             "availability": newData
                         })
-                    })
+                    }
                 })
                 .catch((error) => {
                     console.log("Error getting documents: ", error);
@@ -140,16 +138,15 @@ const Availability = ({ uid }) => {
 
             const db = Firebase.firestore()
 
-            db.collection("experts").where("uid", "==", uid)
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
+            db.collection("experts").doc(uid).get()
+                .then((doc) => {
+                    if (doc.exists) {
                         setAvailability({ ...newData })
 
                         doc.ref.update({
                             "availability": newData
                         })
-                    })
+                    }
                 })
                 .catch((error) => {
                     console.log("Error getting documents: ", error);
@@ -210,14 +207,15 @@ const Availability = ({ uid }) => {
 
 
     useEffect(() => {
+        if (!uid) return
+        
         const db = Firebase.firestore()
 
-        db.collection("experts").where("uid", "==", uid)
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
+        db.collection("experts").doc(uid).get()
+            .then((doc) => {
+                if (doc.exists) {
                     setAvailability(doc.data().availability)
-                })
+                }
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);

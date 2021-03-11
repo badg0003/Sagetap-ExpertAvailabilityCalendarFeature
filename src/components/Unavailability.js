@@ -13,14 +13,15 @@ const Unavailability = ({ uid }) => {
     const [value, onChange] = useState();
 
     useEffect(() => {
+        if (!uid) return
+        
         const db = Firebase.firestore()
 
-        db.collection("experts").where("uid", "==", uid)
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
+        db.collection("experts").doc(uid).get()
+            .then((doc) => {
+                if (doc.exists) {
                     setUnavailability(doc.data().unavailability)
-                })
+                }
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
@@ -29,23 +30,22 @@ const Unavailability = ({ uid }) => {
 
     const onDeleteEvent = (id) => {
         const newData = unavailability.filter((item, index) => index !== id)
-        
-        const db = Firebase.firestore()
-        
-        db.collection("experts").where("uid", "==", uid)
-        .get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                setUnavailability(newData)
 
-                doc.ref.update({
-                    "unavailability": newData
-                })
+        const db = Firebase.firestore()
+
+        db.collection("experts").doc(uid).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    setUnavailability(newData)
+
+                    doc.ref.update({
+                        "unavailability": newData
+                    })
+                }
             })
-        })
-        .catch((error) => {
-            console.log("Error getting documents: ", error);
-        })
+            .catch((error) => {
+                console.log("Error getting documents: ", error);
+            })
     }
 
     const onAddEvent = () => {
@@ -65,25 +65,24 @@ const Unavailability = ({ uid }) => {
         const newData = unavailability
         newData[index]['from'] = new Date(dateRange[0]).toISOString()
         newData[index]['to'] = new Date(dateRange[1]).toISOString()
-        
+
         const db = Firebase.firestore()
 
-        db.collection("experts").where("uid", "==", uid)
-        .get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                setUnavailability([
-                    ...newData
-                ])
+        db.collection("experts").doc(uid).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    setUnavailability([
+                        ...newData
+                    ])
 
-                doc.ref.update({
-                    "unavailability": newData
-                })
+                    doc.ref.update({
+                        "unavailability": newData
+                    })
+                }
             })
-        })
-        .catch((error) => {
-            console.log("Error getting documents: ", error);
-        })
+            .catch((error) => {
+                console.log("Error getting documents: ", error);
+            })
     }
 
     return (

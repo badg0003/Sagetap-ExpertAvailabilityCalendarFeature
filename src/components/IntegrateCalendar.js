@@ -14,12 +14,15 @@ const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v
 // included, separated by spaces.
 const SCOPES = "https://www.googleapis.com/auth/calendar";
 
-const IntegrateCalendar = () => {
-    const uid = '8d2e8185-9ebf-4a6c-a7d1-020c5fe343ce' // hard-coding for now
+const IntegrateCalendar = ({ userId }) => {
+    const uid = userId
     const [auth, setAuth] = useState(false)
     const [calendar, setCalendar] = useState()
 
     useEffect(() => {
+
+        if (!uid) return
+
         window.gapi.load("client:auth2", () => {
             window.gapi.client.init({
                 apiKey: API_KEY,
@@ -34,17 +37,16 @@ const IntegrateCalendar = () => {
 
         const db = Firebase.firestore()
 
-        db.collection("experts").where("uid", "==", uid)
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
+        db.collection("experts").doc(uid).get()
+            .then((doc) => {
+                if (doc.exists) {
                     setCalendar(doc.data().calendarId)
-                })
+                }
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
             })
-    }, [])
+    }, [uid])
 
 
     const handleAuth = () => {
@@ -65,16 +67,15 @@ const IntegrateCalendar = () => {
                 // Write calendar ID to Firebase
                 const db = Firebase.firestore()
 
-                db.collection("experts").where("uid", "==", uid)
-                    .get()
-                    .then((querySnapshot) => {
-                        querySnapshot.forEach((doc) => {
+                db.collection("experts").doc(uid).get()
+                    .then((doc) => {
+                        if (doc.exists) {
                             setCalendar(response.result.id)
                             doc.ref.update({
                                 "calendarId": response.result.id,
                                 "responseToken": responseToken
                             })
-                        })
+                        }
                     })
                     .catch((error) => {
                         console.log("Error getting documents: ", error);
@@ -115,16 +116,15 @@ const IntegrateCalendar = () => {
             // Remove entries from DB
             const db = Firebase.firestore()
 
-            db.collection("experts").where("uid", "==", uid)
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
+            db.collection("experts").doc(uid).get()
+                .then((doc) => {
+                    if (doc.exists) {
                         // setCalendar(response.result.id)
                         doc.ref.update({
                             "calendarId": '',
                             "responseToken": ''
                         })
-                    })
+                    }
                 })
                 .catch((error) => {
                     console.log("Error getting documents: ", error);

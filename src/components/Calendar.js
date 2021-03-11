@@ -22,16 +22,17 @@ function Calendar({ uid }) {
     const [bookingSuccess, setBookingSuccess] = useState(false)
 
     useEffect(() => {
+        if (!uid) return
+
         const db = Firebase.firestore()
 
-        db.collection("experts").where("uid", "==", uid).onSnapshot((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
+        db.collection("experts").doc(uid).get().then((doc) => {
+            if (doc.exists) {
                 setAvailability(doc.data().availability)
                 setUnavailability(doc.data().unavailability)
                 setProfile(doc.data())
-            })
+            }
         })
-
     }, [uid])
 
     useEffect(() => {
@@ -155,7 +156,7 @@ function Calendar({ uid }) {
                     'responseStatus': 'needsAction'
                 }],
                 'summary': `${formValues.firstname.value} ${formValues.lastname.value} // Sagetap`,
-                'description': `Hello Test ${formValues.message.value}`,
+                'description': `${formValues.message.value}`,
             }).then((response) => {
                 // Success
                 // console.log('GCal response', response)
@@ -219,8 +220,8 @@ function Calendar({ uid }) {
                     {bookingSuccess ? <div className="modal">
                         <div className="well">
                             <h2 className="o-text-h2" style={{ textAlign: 'center' }}>Booking confirmed!</h2>
-                            <p className="o-text-lead" style={{marginTop:0,textAlign:'center'}}>{moment(value).format('dddd, MMMM Do').toString()} @ {bookingTime}</p>
-                            <p style={{textAlign:'center'}}>
+                            <p className="o-text-lead" style={{ marginTop: 0, textAlign: 'center' }}>{moment(value).format('dddd, MMMM Do').toString()} @ {bookingTime}</p>
+                            <p style={{ textAlign: 'center' }}>
                                 <button className="o-button" type="button" onClick={() => setBookingSuccess(false)}>Close</button>
                             </p>
                         </div>

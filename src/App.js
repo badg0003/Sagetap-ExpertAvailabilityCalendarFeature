@@ -6,22 +6,115 @@ import {
   NavLink
 } from "react-router-dom";
 
+import Firebase from './components/Firebase'
 import IntegrateCalendar from './components/IntegrateCalendar'
 import Calendar from './components/Calendar'
 import Availability from './components/Availability'
 import Unavailability from './components/Unavailability'
 
 import { ReactComponent as Logo } from './logo.svg';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
 
   const [tab, setTab] = useState(0)
+  const [userAuth, setUserAuth] = useState(Firebase.auth().currentUser)
+  const [loginError, setLoginError] = useState('')
+
+  useEffect(() => {
+    if (!userAuth) {
+      Firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          setUserAuth(user.uid)
+
+          // TEMPORARY
+          // Create "profile" for new user
+          const db = Firebase.firestore()
+
+          db.collection("experts").doc(user.uid).get().then((doc) => {
+            if (!doc.exists) {
+              const data = {
+                'availability': {
+                  'sun': {
+                    'enabled': false,
+                    'ranges': []
+                  },
+                  'mon': {
+                    'enabled': true,
+                    'ranges': [{
+                      'from': '09:00 AM',
+                      'to': '05:00 PM'
+                    }]
+                  },
+                  'tue': {
+                    'enabled': true,
+                    'ranges': [{
+                      'from': '09:00 AM',
+                      'to': '05:00 PM'
+                    }]
+                  },
+                  'wed': {
+                    'enabled': true,
+                    'ranges': [{
+                      'from': '09:00 AM',
+                      'to': '05:00 PM'
+                    }]
+                  },
+                  'thu': {
+                    'enabled': true,
+                    'ranges': [{
+                      'from': '09:00 AM',
+                      'to': '05:00 PM'
+                    }]
+                  },
+                  'fri': {
+                    'enabled': true,
+                    'ranges': [{
+                      'from': '09:00 AM',
+                      'to': '05:00 PM'
+                    }]
+                  },
+                  'sat': {
+                    'enabled': false,
+                    'ranges': []
+                  },
+                },
+                'unavailability': [],
+                'calendarId': '',
+                'responseToken': ''
+              }
+              db.collection("experts").doc(user.uid).set(data)
+            }
+          })
+        }
+      })
+    }
+  }, [userAuth])
+
+  const handleLoginRequest = (e) => {
+    e.preventDefault()
+
+    const { email, password } = e.target.elements
+
+    Firebase.auth().signInWithEmailAndPassword(email.value, password.value)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user)
+        setUserAuth(user.uid)
+        // ...
+      })
+      .catch((error) => {
+        setLoginError(error.code)
+      });
+  }
 
   return (
     <Router>
-
       <div className="app">
+        {!userAuth ? <Login onSubmit={handleLoginRequest} error={loginError} /> : ''}
         <nav className="app__nav">
           <Link to="/">
             <Logo className="app__logo" />
@@ -56,6 +149,9 @@ function App() {
               <Route exact path="/">
                 <Home />
               </Route>
+              <Route path="/login">
+                <Login />
+              </Route>
               <Route path="/availability">
                 <h1 className="o-text-h1">Availability</h1>
                 <p className="o-text-lead" style={{ marginTop: 0, marginBottom: '60px' }}>We only allow bookings within your availability that you set below, and at least 16 hours away to give you time to accept new requests.</p>
@@ -66,18 +162,18 @@ function App() {
                     <button className={`c-tabs__nav__tab${tab === 1 ? " c-tabs__nav__tab--active" : ""}`} type="button" onClick={() => setTab(1)}>Unavailability</button>
                   </nav>
                   <div className={`c-tabs__panel${tab === 0 ? " c-tabs__panel--active" : ""}`}>
-                    <Availability uid="8d2e8185-9ebf-4a6c-a7d1-020c5fe343ce" />
+                    <Availability uid={userAuth} />
                   </div>
                   <div className={`c-tabs__panel${tab === 1 ? " c-tabs__panel--active" : ""}`}>
-                    <Unavailability uid="8d2e8185-9ebf-4a6c-a7d1-020c5fe343ce" />
+                    <Unavailability uid={userAuth} />
                   </div>
                 </div>
               </Route>
               <Route path="/calendar">
-                <IntegrateCalendar />
+                <IntegrateCalendar userId={userAuth} />
               </Route>
               <Route exact path="/book-meeting">
-                <Calendar uid="8d2e8185-9ebf-4a6c-a7d1-020c5fe343ce" />
+                <Calendar uid={userAuth} />
               </Route>
             </Switch>
           </div>
@@ -142,5 +238,31 @@ const Home = () => {
         </Link>
       </div>
     </>
+  )
+}
+
+const Login = ({ onSubmit, error }) => {
+  const [userEmail, setUserEmail] = useState('')
+  const [userPassword, setUserPassword] = useState('')
+
+  return (
+    <div className="modal">
+      <form className="well" onSubmit={onSubmit}>
+        <h1 className="o-text-h1">Login</h1>
+        <p className="o-text-lead">Use the login credentials provided.</p>
+        <div style={{ marginTop: '24px' }}>
+          <label className="o-label" htmlFor="email">Email address</label>
+          <input className="o-input" name="email" id="email" type="email" value={userEmail} required onChange={(e) => setUserEmail(e.target.value)} />
+        </div>
+        <div style={{ marginTop: '24px' }}>
+          <label className="o-label" htmlFor="password">Password</label>
+          <input className="o-input" name="password" id="password" type="password" value={userPassword} required onChange={(e) => setUserPassword(e.target.value)} />
+        </div>
+        <div style={{ marginTop: '24px' }}>
+          <button className="o-button" type="submit">Login</button>
+          {error ? <div style={{ marginTop: '24px', color: 'red' }}>{error}</div> : ''}
+        </div>
+      </form>
+    </div>
   )
 }

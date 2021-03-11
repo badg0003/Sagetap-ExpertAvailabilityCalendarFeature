@@ -1,6 +1,7 @@
 // https://firebase.google.com/docs/web/setup?authuser=2
 import firebase from "firebase/app"
 import "firebase/firestore"
+import "firebase/auth"
 
 const firebaseConfig = {
     apiKey: "AIzaSyAIStaSs6RUsd3GI9kxP1IPrwJ7hyziFms",
