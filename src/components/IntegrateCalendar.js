@@ -54,9 +54,9 @@ const IntegrateCalendar = () => {
     const handleConnect = () => {
         window.gapi.auth2.getAuthInstance().signIn().then((response) => {
             const responseToken
-             = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token
+                = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token
 
-             // Get primary calendar
+            // Get primary calendar
             window.gapi.client.calendar.calendarList.get({
                 'calendarId': 'primary'
             }).then((response) => {
@@ -84,7 +84,7 @@ const IntegrateCalendar = () => {
                  * Set Acl for freeBusyReader access
                  * @see https://developers.google.com/calendar/v3/reference/acl/insert
                  */
-                
+
                 window.gapi.client.calendar.acl.insert({
                     'calendarId': 'primary',
                     'role': 'freeBusyReader',
@@ -111,6 +111,24 @@ const IntegrateCalendar = () => {
             'ruleId': 'default'
         }).then(() => {
             window.gapi.auth2.getAuthInstance().signOut();
+
+            // Remove entries from DB
+            const db = Firebase.firestore()
+
+            db.collection("experts").where("uid", "==", uid)
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        // setCalendar(response.result.id)
+                        doc.ref.update({
+                            "calendarId": '',
+                            "responseToken": ''
+                        })
+                    })
+                })
+                .catch((error) => {
+                    console.log("Error getting documents: ", error);
+                })
         });
     }
 
